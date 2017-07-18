@@ -1,0 +1,212 @@
+@model BeautyCenterCore.Models.Facturas
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        <h4>Citas</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+
+        <div class="form-group col-lg-12">
+            <div class="input-group">
+                <select class="form-control selected" id="ComboBoxC"></select>
+            </div>
+        </div>
+        <div class="form-group" size="100">
+            <div class="input-group">
+                <select class="form-control selected" id="ComboBox" onchange="Seleccionar()"></select>
+                <button type="button" class="btn btn-default" id="btnAgregar" onclick="AgregarDetalle()">Agregar</button>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover table-sm table-bordered" id="tDetalle">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Servicios</th>
+                        <th>Costo</th>
+                    </tr>
+                </thead>
+                <tbody id="tbBody"></tbody>
+            </table>
+        </div>
+
+        <input class="form-control input-group-sm col-2" type="text" id="tbCantPersonas" placeholder="Cantidad Personas" />
+
+        <input class="form-control input-group-sm col-2" type="text" id="dpFecha" placeholder="Fecha" />
+        <div class="form-group text-center col-xl-12">
+            <div class="col-md-offset-2 col-md-10">
+                <button type="button" class="btn btn-default col-sm-2" id="btnCrear" onclick="CrearCita()">Crear</button>
+            </div>
+        </div>
+    </div>
+}
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                Cargar();
+                CargarC();
+            })
+            var nose = 0;
+            function CrearDetalle(ciId) {
+                $('#tbBody tr').each(function () {
+                    var detalles = new Array();
+                    var ci = ciId;
+                    var atributosC = $('#ComboBoxC').find('option:selected');
+                    var Ser = $(this).find('td').eq(1).html();
+                    var atributoC = atributosC.text();
+                    detalles.push(
+                        {
+                            Id: 0,
+                            CitaId: ci,
+                            ClienteId: nose,
+                            Nombres: atributoC,
+                            Servicio: Ser
+                        });
+                    alert("aqui viene");
+                    alert(nose);
+                    SentDetails(detalles);
+                });
+            }
+            function AgregarDetalle() {
+
+                var long = $("#tbBody tr").length;
+                var atributos = $('#ComboBox').find('option:selected');
+                var atributo = atributos.text();
+                var servicio = $("#ComboBox").val();
+
+                var fila = "<tr>";
+                fila += "<td>" + (long + 1) + "</td>";
+                fila += "<td>" + atributo + "</td>";
+                fila += "</tr>";
+
+
+                $('#tDetalle tbody').append(fila);
+
+                Clear();
+            }
+            function SentDetails(detail) {
+                var pack = JSON.stringify(detail);
+                console.log(detail);
+                $.ajax(
+                    {
+                        type: "POST",
+                        url: "/DetalleCitas/Save",
+                        data: pack,
+                        contentType: "application/json",
+                        success: function (data) {
+                            if (!data) {
+                                alert("No puedo guardar el detalle");
+                            }
+                            else {
+                                alert("Se Guardo");
+                                Limpiar();
+                            }
+                        }
+                    });
+            }
+            function EnviarCita(personas) {
+                $.ajax(
+                    {
+                        method: "POST",
+                        url: "/Citas/Save",
+                        data: personas,
+                        success: function (id) {
+                            if (parseInt(id) > 0) {
+                                CrearDetalle(id);
+                            }
+                            else {
+                                alert("");
+                            }
+                        }
+                    });
+            };
+            function CrearCita() {
+                var atributosC = $('#ComboBoxC').find('option:selected');
+                var atributosS = $('#ComboBox').find('option:selected');
+                var atributoC = atributosC.text();
+                var atributoCId = $('#ComboBoxC').find('option:selected').attr('id');
+                nose = atributoCId;
+                var atributoS = atributosS.text();
+                var can = $('#tbCantPersonas').val();
+                var fec = $('#dtFecha').val();
+                var factura = {
+                    CitaId: 0,
+                    ClienteId:atributoCId,
+                    Nombres: atributoC,
+                    Servicio: atributoS,
+                    CantPersonas: can,
+                    Fecha: fec
+                }
+                alert(factura);
+                EnviarCita(factura);
+            }
+            function Clear() {
+                $("#tbServicio").val("");
+                $("#tbCosto").val("");
+                $("#tbDescuento").val("");
+                $("#tbSub-Total").val("");
+            }
+            function Seleccionar() {
+                var precio = $('#ComboBox').find('option:selected').attr('value');
+
+                $('#tbCosto').val(precio);
+            }
+            function Limpiar() {
+                $('#ComboBoxC').val("");
+                $('#tbCosto').val("");
+                $('#tbServicio').val("");
+                Clear();
+                $('#tbBody tr').remove();
+            }
+            function Cargar() {
+                $.getJSON("/Servicios/Lista",
+                    {
+                        id: 1
+                    },
+                    function (lista) {
+                        $.each(lista, function (index, lista) {
+                            var Id = lista.servicioId;
+                            var Costo = lista.costo;
+                            var Nombre = lista.nombre;
+                            var option = "<option id='" + Id + "'value='" + Costo + "'>" + Nombre + "</option>";
+                            $('#ComboBox').append(option);
+                        });
+                    });
+            }
+            function CargarC() {
+                $.getJSON("/Clientes/Lista",
+                    {
+                        id: 1
+                    },
+                    function (lista) {
+                        $.each(lista, function (index, lista) {
+                            var Id = lista.clienteId;
+                            var Nombre = lista.nombres;
+                            var Costo = lista.costo;
+                            var option = "<option id='" + Id + "'value='" + Costo + "'>" + Nombre + "</option>";
+                            $('#ComboBoxC').append(option);
+                        });
+                    });
+            }
+        </script>
+    }
+}

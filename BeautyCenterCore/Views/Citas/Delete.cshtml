@@ -1,0 +1,47 @@
+@model BeautyCenterCore.Models.Citas
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Citas</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <input type="hidden" asp-for="CitaId" />
+        <dt>
+            @Html.DisplayNameFor(model => model.ClienteId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ClienteId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Servicio)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Servicio)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CantPersonas)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CantPersonas)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Fecha)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Fecha)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </form>
+</div>

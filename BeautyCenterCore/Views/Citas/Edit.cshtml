@@ -1,0 +1,57 @@
+@model BeautyCenterCore.Models.Citas
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<form asp-action="Edit">
+    <div class="form-horizontal">
+        <h4>Citas</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="CitaId" />
+        <div class="form-group">
+            <label asp-for="ClienteId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ClienteId" class="form-control" />
+                <span asp-validation-for="ClienteId" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Servicio" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ServicioId" class="form-control" />
+                <span asp-validation-for="Servicio" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="CantPersonas" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="CantPersonas" class="form-control" />
+                <span asp-validation-for="CantPersonas" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Fecha" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Fecha" class="form-control" />
+                <span asp-validation-for="Fecha" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

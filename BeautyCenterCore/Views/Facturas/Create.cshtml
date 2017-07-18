@@ -1,0 +1,232 @@
+@model BeautyCenterCore.Models.Facturas
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        <h4>Facturacion</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+
+        <div class="form-group col-lg-12">
+            <div class="input-group">
+                <label>Cliente</label>
+                <select class="form-control selected"  id="ComboBoxCliente"placeholder="Cliente"onchange=""></select>
+            </div>
+        </div>
+        <div class="form-group" size="100">
+            <label>Servicios</label>
+            <div class="input-group">
+                
+                <select class="form-control selected" id="ComboBox" onchange="Seleccionar()"placeholder="Servicios"></select>
+
+                <input class="form-control input-group-sm col-2" type="text" id="tbCosto" readonly placeholder="Costo" />
+
+                <input class="form-control input-group-sm col-2" type="text" id="tbDescuento" placeholder="Descuento" />
+
+                <button type="button" class="btn btn-default" id="btnAgregar" onclick="AgregarDetalle()">Agregar</button>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover table-sm table-bordered" id="tDetalle">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Servicio</th>
+                        <th>Costo</th>
+                        <th>Descuento</th>
+                        <th>Sub-Total</th>
+                    </tr>
+                </thead>
+                <tbody id="tbBody"></tbody>
+            </table>
+        </div>
+        <div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon">Total:</span>
+                <input class="form-control input-group-lg col-2" type="text" id="tbTotal" value="0" readonly />
+            </div>
+        </div>
+        <div class="form-group text-center col-xl-12">
+            <div class="col-md-offset-2 col-md-10">
+                <button type="button" class="btn btn-default col-sm-2" id="btnCrear" onclick="CrearFactura()">Crear</button>
+            </div>
+        </div>
+    </div>
+}
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                CargarClientes();
+                CargarServicios();
+            })
+            var cos = 0;
+            function CrearDetalle(FacturaId) {
+
+                $('#tbBody tr').each(function () {
+                    var detalles = new Array();
+                    var Fac = FacturaId;
+                    var Ser = $(this).find('td').eq(1).html();
+                    var Costo = $(this).find('td').eq(2).html();
+                    var Des = $(this).find('td').eq(3).html();
+                    var Car = $(this).find('td').eq(4).html();
+                    detalles.push(
+                        {
+                            Id: 0,
+                            FacturaId: Fac,
+                            ServicioId: Ser,
+                            Costo: Costo,
+                            Descuento: Des,
+                            SubTotal: Car
+                        });
+                    SentDetails(detalles);
+                });
+
+            }
+            function AgregarDetalle() {
+                var long = $("#tbBody tr").length;
+                var atributos = $('#ComboBox').find('option:selected');
+                var atributo = atributos.text();
+                var monto = $('#tbTotal').val();
+
+                var servicio = $("#ComboBox").val();
+                var costo = $("#tbCosto").val();
+                var des = $("#tbDescuento").val();
+                var subTotal = costo - des;
+
+                var fila = "<tr>";
+                fila += "<td>" + (long + 1) + "</td>";
+                fila += "<td>" + atributo + "</td>";
+                fila += "<td>" + costo + "</td>";
+                fila += "<td>" + des + "</td>";
+                fila += "<td>" + subTotal + "</td>";
+                fila += "</tr>";
+
+                monto = parseFloat(subTotal) + parseFloat(monto);
+
+                $('#tDetalle tbody').append(fila);
+
+                $('#tbTotal').val(monto);
+
+                Clear();
+            }
+            function SentDetails(detail) {
+                var pack = JSON.stringify(detail);
+                console.log(detail);
+                $.ajax(
+                    {
+                        type: "POST",
+                        url: "/FacturaDetalles/Save",
+                        data: pack,
+                        contentType: "application/json",
+                        success: function (data) {
+                            if (!data) {
+                                alert("No puedo guardar el detalle");
+                            }
+                            else {
+                                alert("Se Guardo");
+                                Limpiar();
+                            }
+                        }
+                    });
+            }
+
+            function EnviarFactura(personas) {
+                $.ajax(
+                    {
+                        method: "POST",
+                        url: "/Facturas/Save",
+                        data: personas,
+                        success: function (id) {
+                            if (parseInt(id) > 0) {
+                                CrearDetalle(id);
+                            }
+                            else {
+                                alert("");
+                            }
+                        }
+                    });
+            };
+            function CrearFactura() {
+                var atributos = $('#ComboBoxC').find('option:selected');
+                var atributo = atributos.text();
+                var total = $('#tbTotal').val();
+                var factura = {
+                    FacturaId: 0,
+                    ClienteId: atributo,
+                    Total: total
+                }
+                EnviarFactura(factura);
+            }
+                    
+            function Seleccionar() {
+                var precio = $('#ComboBox').find('option:selected').attr('value');
+
+                $('#tbCosto').val(precio);
+            }
+
+            function Limpiar() {
+                $('#tbCosto').val("");
+                $('#tbServicio').val("");
+                Clear();
+                $('#tbBody tr').remove();
+            }
+            function Clear() {
+                $("#tbServicio").val("");
+                $("#tbCosto").val("");
+                $("#tbDescuento").val("");
+                $("#tbSub-Total").val("");
+            }    
+
+            function CargarClientes() {
+                $.getJSON("/Clientes/Lista",
+                    {
+                        id: 1
+                    },
+                    function (lista) {
+                        $.each(lista, function (index, lista) {
+                            var Id = lista.clienteId;
+                            var cli = lista.nombres;
+                            var ser = lista.ciudad;
+                            var option = "<option id='" + Id + "'value ='" + ser + "'>" + cli + "</option>";
+                            $('#ComboBoxCliente').append(option);
+                        });
+                    });
+            }
+            function CargarServicios() {
+                $.getJSON("/Servicios/Lista",
+                    {
+                        id: 1
+                    },
+                    function (lista) {
+                        var p = JSON.stringify(lista)
+                        $.each(lista, function (index, lista) {
+                            var Id = lista.ServicioId;
+                            var Costo = lista.costo;
+                            var Nombre = lista.nombre;
+                            var option = "<option id='" + Id + "'value='" + Costo + "'>" + Nombre + "</option>";
+                            $('#ComboBox').append(option);
+                        });
+                    });
+            }   
+        </script>
+    }
+}
+    
