@@ -7,11 +7,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using BeautyCenterCore.Data;
 using Microsoft.EntityFrameworkCore;
 using BeautyCenterCore.Models;
+using BeautyCenterCore.Data;
 
-namespace IdentitySampleApplication
+namespace BeautyCenterCore
 {
     public class Startup
     {
@@ -31,7 +31,7 @@ namespace IdentitySampleApplication
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<BeautyCoreDb>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("BeautyCoreDb")));
 
             services.AddIdentity<ApplicationUser, ApplicationRole>()
                 .AddEntityFrameworkStores<BeautyCoreDb>()
@@ -62,7 +62,7 @@ namespace IdentitySampleApplication
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=ApplicationRole}/{action=Index}/{id?}");
+                    template: "{controller=ApplicationRoles}/{action=Index}/{id?}");
             });
         }
     }

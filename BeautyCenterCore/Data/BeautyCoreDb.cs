@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using BeautyCenterCore.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using BeautyCenterCore.Data;
 
 namespace BeautyCenterCore.Models
 {
@@ -34,5 +35,11 @@ namespace BeautyCenterCore.Models
         public DbSet<BeautyCenterCore.Models.Servicios> Servicios { get; set; }
 
         public DbSet<BeautyCenterCore.Models.Empleados> Empleados { get; set; }
+
+        public DbSet<BeautyCenterCore.Data.ApplicationRole> ApplicationRole { get; set; }
+
+        public DbSet<BeautyCenterCore.Models.UserViewModel> UserViewModel { get; set; }
+
+        public DbSet<BeautyCenterCore.Models.LoginViewModel> LoginViewModel { get; set; }
     }
 }
