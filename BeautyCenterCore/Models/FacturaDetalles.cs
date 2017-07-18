@@ -17,6 +17,6 @@ namespace BeautyCenterCore.Models
         [Required(ErrorMessage = "El Descuento es Opcional")]
         public double Descuento { get; set; }
 
-        public decimal SubTotal { get; set; }
+        public double SubTotal { get; set; }
     }
 }
