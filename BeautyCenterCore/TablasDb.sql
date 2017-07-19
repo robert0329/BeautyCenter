@@ -80,3 +80,12 @@ Nombre varchar(100),
 Costo decimal(18) ,
 );
 
+create table UserAccount(
+UserID int identity(1,1)not null primary key,
+ConfirmPassword varchar(50),
+Email     varchar(50),
+FirstName varchar(50),
+LastName  varchar(50),
+Password  varchar(50),
+Username  varchar(50),
+);
