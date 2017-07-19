@@ -5,15 +5,14 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using BeautyCenterCore.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using BeautyCenterCore.Data;
 
 namespace BeautyCenterCore.Models
 {
-    public class BeautyCoreDb : IdentityDbContext<ApplicationUser, ApplicationRole, string>
+    public class BeautyCoreDb : DbContext
     {
         public BeautyCoreDb() : base()
         {
-
+            
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -21,7 +20,13 @@ namespace BeautyCenterCore.Models
             //Data Source=ROBERT\\SERVER;Initial Catalog=BeautyCenter;Integrated Security=True;Connect Timeout=15;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False
         }
 
+        public static BeautyCoreDb Create()
+        {
+            return new BeautyCoreDb();
+        }
 
+        
+        public DbSet<UserAccount> userAccount { get; set; }
         public DbSet<BeautyCenterCore.Models.Citas> Citas { get; set; }
 
         public DbSet<BeautyCenterCore.Models.Clientes> Clientes { get; set; }
@@ -35,11 +40,5 @@ namespace BeautyCenterCore.Models
         public DbSet<BeautyCenterCore.Models.Servicios> Servicios { get; set; }
 
         public DbSet<BeautyCenterCore.Models.Empleados> Empleados { get; set; }
-
-        public DbSet<BeautyCenterCore.Data.ApplicationRole> ApplicationRole { get; set; }
-
-        public DbSet<BeautyCenterCore.Models.UserViewModel> UserViewModel { get; set; }
-
-        public DbSet<BeautyCenterCore.Models.LoginViewModel> LoginViewModel { get; set; }
     }
 }

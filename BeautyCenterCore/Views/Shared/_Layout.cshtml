@@ -1,4 +1,5 @@
 ﻿@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
+@using Microsoft.AspNetCore.Http
 <!DOCTYPE html>
 <html>
 <head>
@@ -33,12 +34,22 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Clientes" asp-action="Index">Clientes</a></li>
-                    <li><a asp-area="" asp-controller="Servicios" asp-action="Index">Servicios</a></li>
-                    <li><a asp-area="" asp-controller="Facturas" asp-action="Index">Facturas</a></li>
-                    <li><a asp-area="" asp-controller="FacturaDetalles" asp-action="Index">Factura Detalle</a></li>
-                    <li><a asp-area="" asp-controller="Citas" asp-action="Index">Citas</a></li>
-                    <li><a asp-area="" asp-controller="DetalleCitas" asp-action="Index">Citas Detalle</a></li>
+                    
+                    @if (Context.Session.GetString("UserID") != null)
+                    {
+                        <li><a asp-area="" asp-controller="Clientes" asp-action="Index">Clientes</a></li>
+                        <li><a asp-area="" asp-controller="Servicios" asp-action="Index">Servicios</a></li>
+                        <li><a asp-area="" asp-controller="Facturas" asp-action="Index">Facturas</a></li>
+                        <li><a asp-area="" asp-controller="FacturaDetalles" asp-action="Index">Factura Detalle</a></li>
+                        <li><a asp-area="" asp-controller="Citas" asp-action="Index">Citas</a></li>
+                        <li><a asp-area="" asp-controller="DetalleCitas" asp-action="Index">Citas Detalle</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="Register">Register</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="Logout">Logout</a></li>
+                    }
+                    else
+                    {
+                        <li><a asp-area="" asp-controller="Home" asp-action="Login">Login</a></li>
+                    }
                 </ul>
             </div>
         </div>

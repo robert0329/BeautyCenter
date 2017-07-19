@@ -9,7 +9,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using BeautyCenterCore.Models;
-using BeautyCenterCore.Data;
 
 namespace BeautyCenterCore
 {
@@ -32,10 +31,8 @@ namespace BeautyCenterCore
         {
             services.AddDbContext<BeautyCoreDb>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("BeautyCoreDb")));
-
-            services.AddIdentity<ApplicationUser, ApplicationRole>()
-                .AddEntityFrameworkStores<BeautyCoreDb>()
-                .AddDefaultTokenProviders();
+            services.AddDistributedMemoryCache();
+            services.AddSession();
             services.AddMvc();
         }
 
@@ -56,13 +53,14 @@ namespace BeautyCenterCore
             }
 
             app.UseStaticFiles();
-            app.UseIdentity();
+            app.UseSession();
+
 
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Citas}/{action=Index}/{id?}");
+                    template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

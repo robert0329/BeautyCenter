@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BeautyCenterCore.Models;
 using BeautyCenterCore.BLL;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BeautyCenterCore.Controllers
 {
@@ -51,9 +52,9 @@ namespace BeautyCenterCore.Controllers
             return Json(id);
         }
         // GET: Citas
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Citas.ToListAsync());
+            return View(BLL.CitasBLL.GetLista());
         }
 
         // GET: Citas/Details/5
