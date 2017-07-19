@@ -11,6 +11,8 @@
   <ItemGroup>
     <Content Include="wwwroot\css\freelancer.css" />
     <Content Include="wwwroot\css\freelancer.min.css" />
+    <Content Include="wwwroot\css\grayscale.css" />
+    <Content Include="wwwroot\css\grayscale.min.css" />
     <Content Include="wwwroot\css\site.css" />
     <Content Include="wwwroot\css\site.min.css" />
     <Content Include="wwwroot\favicon.ico" />
@@ -26,8 +28,8 @@
     <Content Include="wwwroot\images\portfolio\submarine.png" />
     <Content Include="wwwroot\images\profile.png" />
     <Content Include="wwwroot\js\contact_me.js" />
-    <Content Include="wwwroot\js\freelancer.js" />
-    <Content Include="wwwroot\js\freelancer.min.js" />
+    <Content Include="wwwroot\js\grayscale.js" />
+    <Content Include="wwwroot\js\grayscale.min.js" />
     <Content Include="wwwroot\js\jqBootstrapValidation.js" />
     <Content Include="wwwroot\js\site.js" />
     <Content Include="wwwroot\js\site.min.js" />
@@ -263,8 +265,6 @@
     <None Include="wwwroot\images\portfolio\submarine.png" />
     <None Include="wwwroot\images\profile.png" />
     <None Include="wwwroot\js\contact_me.js" />
-    <None Include="wwwroot\js\freelancer.js" />
-    <None Include="wwwroot\js\freelancer.min.js" />
     <None Include="wwwroot\js\jqBootstrapValidation.js" />
     <None Include="wwwroot\js\site.js" />
     <None Include="wwwroot\js\site.min.js" />
