@@ -16,10 +16,10 @@ namespace BeautyCenterCore.Models
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Data Source=personasserver.database.windows.net;Initial Catalog=PersonasDb;Integrated Security=False;User ID=dante0329;Password=Onepiece29;Connect Timeout=15;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+            optionsBuilder.UseSqlServer("Data Source=ROBERT\\SERVER;Initial Catalog=BeautyCenter;Integrated Security=True;Connect Timeout=15;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
             //Data Source=ROBERT\\SERVER;Initial Catalog=BeautyCenter;Integrated Security=True;Connect Timeout=15;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False
         }
-
+//Data Source=personasserver.database.windows.net;Initial Catalog=PersonasDb;Integrated Security=False;User ID=dante0329;Password=Onepiece29;Connect Timeout=15;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False
         public static BeautyCoreDb Create()
         {
             return new BeautyCoreDb();
