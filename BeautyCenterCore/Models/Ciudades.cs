@@ -10,6 +10,8 @@ namespace BeautyCenterCore.Models
     {
         [Key]
         public int CiudadId { get; set; }
+
+        [Required(ErrorMessage = "Es necesario el nombre de la ciudad")]
         public string NombreCiudad { get; set; }
     }
 }
