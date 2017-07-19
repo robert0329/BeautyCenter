@@ -42,12 +42,12 @@ namespace BeautyCenterCore.Controllers
         {
             return View();
         }
-
+        [Authorize(ActiveAuthenticationSchemes = "Policy")]
         public ActionResult Register()
         {
             return View();
         }
-
+        [Authorize(ActiveAuthenticationSchemes = "Policy")]
         [HttpPost]
         public ActionResult Register(UserAccount user)
         {
@@ -83,7 +83,16 @@ namespace BeautyCenterCore.Controllers
                 var userIdentity = new ClaimsIdentity(claims, "login");
 
                 ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
-                HttpContext.Authentication.SignInAsync("CookiePolicy", principal);
+
+                if(account.Username =="Admin")
+                {
+                    HttpContext.Authentication.SignInAsync("Policy", principal);
+                }
+                else
+                {
+                    HttpContext.Authentication.SignInAsync("CookiePolicy", principal);
+                }
+                
                 return RedirectToAction("Index");
             }
             else
@@ -112,35 +121,6 @@ namespace BeautyCenterCore.Controllers
             HttpContext.Session.Clear();
             return RedirectToAction("Index");
         }
-        //public IActionResult About()
-        //{
-        //    ViewData["Message"] = "Your application description page.";
-
-        //    return View();
-        //}
-
-        //public IActionResult Contact()
-        //{
-        //    ViewData["Message"] = "Your contact page.";
-
-        //    return View();
-        //}
-
-        //public IActionResult Error()
-        //{
-        //    return View();
-        //}
-        //private readonly UserManager<ApplicationUser> userManager;
-
-        //public HomeController(UserManager<ApplicationUser> userManager)
-        //{
-        //    this.userManager = userManager;
-        //}
-        //[Authorize(Roles = "User")]
-        //public IActionResult Index()
-        //{
-        //    string userName = userManager.GetUserName(User);
-        //    return View("Index", userName);
-        //}
+        
     }
 }

@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace BeautyCenterCore.Controllers
 {
-    [Authorize]
+    [Authorize(ActiveAuthenticationSchemes = "CookiePolicy")]
     public class ClientesController : Controller
     {
         private readonly BeautyCoreDb _context;
@@ -61,12 +61,11 @@ namespace BeautyCenterCore.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ClienteId,Nombres,Provincia,Ciudad,Direccion,Cedula,Telefono,FechaNac")] Clientes clientes)
+        public IActionResult Create([Bind("ClienteId,Nombres,Provincia,Ciudad,Direccion,Cedula,Telefono,FechaNac")] Clientes clientes)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(clientes);
-                await _context.SaveChangesAsync();
+                BLL.ClientesBLL.Insertar(clientes);
                 return RedirectToAction("Index");
             }
             return View(clientes);
@@ -124,15 +123,14 @@ namespace BeautyCenterCore.Controllers
         }
 
         // GET: Clientes/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var clientes = await _context.Clientes
-                .SingleOrDefaultAsync(m => m.ClienteId == id);
+            Clientes clientes = BLL.ClientesBLL.Buscar(id);
             if (clientes == null)
             {
                 return NotFound();
@@ -144,11 +142,10 @@ namespace BeautyCenterCore.Controllers
         // POST: Clientes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int id)
         {
-            var clientes = await _context.Clientes.SingleOrDefaultAsync(m => m.ClienteId == id);
-            _context.Clientes.Remove(clientes);
-            await _context.SaveChangesAsync();
+            Clientes nuevo = BLL.ClientesBLL.Buscar(id);
+            BLL.ClientesBLL.Eliminar(nuevo);
             return RedirectToAction("Index");
         }
 

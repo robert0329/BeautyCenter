@@ -139,31 +139,29 @@ namespace BeautyCenterCore.Controllers
         }
 
         // GET: Facturas/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var facturas = await _context.Facturas
-                .SingleOrDefaultAsync(m => m.FacturaId == id);
-            if (facturas == null)
+            Facturas nuevo = BLL.FacturasBLL.Buscar(id);
+            if (nuevo == null)
             {
                 return NotFound();
             }
 
-            return View(facturas);
+            return View(nuevo);
         }
 
         // POST: Facturas/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int id)
         {
-            var facturas = await _context.Facturas.SingleOrDefaultAsync(m => m.FacturaId == id);
-            _context.Facturas.Remove(facturas);
-            await _context.SaveChangesAsync();
+            Facturas nuevo = BLL.FacturasBLL.Buscar(id);
+            BLL.FacturasBLL.Eliminar(nuevo);
             return RedirectToAction("Index");
         }
 

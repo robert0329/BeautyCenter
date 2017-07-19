@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace BeautyCenterCore.Controllers
 {
-    [Authorize]
+    [Authorize(ActiveAuthenticationSchemes = "CookiePolicy")]
     public class FacturaDetallesController : Controller
     {
         private readonly BeautyCoreDb _context;

@@ -32,11 +32,13 @@ namespace BeautyCenterCore
         {
             services.AddDbContext<BeautyCoreDb>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("BeautyCoreDb")));
+
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("CookiePolicy", policy =>
                 {
                     policy.AddAuthenticationSchemes("CookiePolicy", "CookiePolicy"); // order does matter. The last scheme specified here WILL become the default Identity when accessed from User.Identity
+                    policy.AddAuthenticationSchemes("Policy", "Policy");
                     policy.RequireAuthenticatedUser();
                 });
             });
@@ -68,7 +70,15 @@ namespace BeautyCenterCore
             {
                 AuthenticationScheme = "CookiePolicy",
                 LoginPath = new PathString("/Home/Login/"),
-                AccessDeniedPath = new PathString("/Account/AccessDenied/"),
+                AccessDeniedPath = new PathString("/Home/Index/"),
+                AutomaticAuthenticate = false, // this will be handled by the authorisation policy
+                AutomaticChallenge = false // this will be handled by the authorisation policy
+            });
+            app.UseCookieAuthentication(new CookieAuthenticationOptions()
+            {
+                AuthenticationScheme = "Policy",
+                LoginPath = new PathString("/Home/Login/"),
+                AccessDeniedPath = new PathString("/Home/Index/"),
                 AutomaticAuthenticate = false, // this will be handled by the authorisation policy
                 AutomaticChallenge = false // this will be handled by the authorisation policy
             });

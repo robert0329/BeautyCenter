@@ -1,4 +1,5 @@
 ﻿using BeautyCenterCore.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,6 +38,42 @@ namespace BeautyCenterCore.BLL
             }
             return lista;
 
+        }
+        public static bool Eliminar(Facturas nuevo)
+        {
+            bool resultado = false;
+            using (var Conn = new BeautyCoreDb())
+            {
+                try
+                {
+                    Conn.Entry(nuevo).State = EntityState.Deleted;
+                    Conn.SaveChanges();
+                    resultado = true;
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+            }
+            return resultado;
+        }
+        public static Facturas Buscar(int Id)
+        {
+            var c = new Facturas();
+            using (var Conn = new BeautyCoreDb())
+            {
+                try
+                {
+                    c = Conn.Facturas.Find(Id);
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+            }
+            return c;
         }
     }
 }
