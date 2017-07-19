@@ -67,14 +67,12 @@ Servicio varchar(100),
 Costo float
 );
 
-CREATE TABLE [dbo].[Facturas] (
-    [FacturaId] INT          IDENTITY (1, 1) NOT NULL,
-    [ClienteId] INT          NULL,
-    [Fecha]     DATETIME     NULL,
-    [Total]     DECIMAL (18) NULL,
-	Nombres varchar(50),
-    PRIMARY KEY CLUSTERED ([FacturaId] ASC),
-    FOREIGN KEY ([ClienteId]) REFERENCES [dbo].[Clientes] ([ClienteId])
+Create table Facturas(
+FacturaId int identity(1,1) not null primary key,
+ClienteId int not null foreign key references Clientes,
+Fecha    datetime,
+Total    decimal(18) ,
+Nombres varchar(50),
 );
 
 
