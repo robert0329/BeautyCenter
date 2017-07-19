@@ -42,6 +42,10 @@ namespace BeautyCenterCore
             });
             services.AddDistributedMemoryCache();
             services.AddSession();
+            services.AddSession(options => {
+                options.IdleTimeout = TimeSpan.FromMinutes(15);
+                options.CookieName = "CookiePolicy";
+            });
             services.AddMvc();
         }
 
