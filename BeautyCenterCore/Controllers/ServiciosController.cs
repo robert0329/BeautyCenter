@@ -122,31 +122,29 @@ namespace BeautyCenterCore.Controllers
         }
 
         // GET: Servicios/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var servicios = await _context.Servicios
-                .SingleOrDefaultAsync(m => m.ServicioId == id);
-            if (servicios == null)
+            Servicios nuevo = BLL.ServiciosBLL.Buscar(id);
+            if (nuevo == null)
             {
                 return NotFound();
             }
 
-            return View(servicios);
+            return View(nuevo);
         }
 
         // POST: Servicios/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int id)
         {
-            var servicios = await _context.Servicios.SingleOrDefaultAsync(m => m.ServicioId == id);
-            _context.Servicios.Remove(servicios);
-            await _context.SaveChangesAsync();
+            Servicios nuevo = BLL.ServiciosBLL.Buscar(id);
+            BLL.ServiciosBLL.Eliminar(nuevo);
             return RedirectToAction("Index");
         }
 
