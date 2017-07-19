@@ -42,11 +42,12 @@ namespace BeautyCenterCore.Controllers
         {
             return View();
         }
-        [Authorize(ActiveAuthenticationSchemes = "Policy")]
+        [Authorize(ActiveAuthenticationSchemes = "CookiePolicy")]
         public ActionResult Register()
         {
             return View();
         }
+        [Authorize(ActiveAuthenticationSchemes = "CookiePolicy")]
         [HttpPost]
         public ActionResult Register(UserAccount user)
         {
@@ -83,16 +84,8 @@ namespace BeautyCenterCore.Controllers
 
                 ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
 
-                //if(account.Username =="Admin" || account.Username == "admin")
-                //{
-                //    HttpContext.Authentication.SignOutAsync("CookiePolicy");
-                //    HttpContext.Authentication.SignInAsync("Policy", principal);
-                //}
-                //else
-                {
-                    HttpContext.Authentication.SignInAsync("CookiePolicy", principal);
-                }
-                
+                HttpContext.Authentication.SignInAsync("CookiePolicy", principal);
+
                 return RedirectToAction("Index");
             }
             else
@@ -114,13 +107,16 @@ namespace BeautyCenterCore.Controllers
                 return RedirectToAction("Login");
             }
         }
-
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
         public ActionResult Logout()
         {
             HttpContext.Authentication.SignOutAsync("CookiePolicy");
             HttpContext.Session.Clear();
             return RedirectToAction("Index");
         }
-        
+
     }
 }

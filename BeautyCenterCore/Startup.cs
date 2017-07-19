@@ -35,11 +35,6 @@ namespace BeautyCenterCore
 
             services.AddAuthorization(options =>
             {
-                //options.AddPolicy("Policy", policy =>
-                //{
-                //    policy.AddAuthenticationSchemes("Policy", "Policy");
-                //    policy.RequireAuthenticatedUser();
-                //});
                 options.AddPolicy("CookiePolicy", policy =>
                 {
                     policy.AddAuthenticationSchemes("CookiePolicy", "CookiePolicy");
@@ -47,10 +42,11 @@ namespace BeautyCenterCore
                 });
                 
             });
+
             services.AddDistributedMemoryCache();
             services.AddSession();
             services.AddSession(options => {
-                options.IdleTimeout = TimeSpan.FromMinutes(15);
+                options.IdleTimeout = TimeSpan.FromMinutes(5);
                 options.CookieName = "CookiePolicy";
             });
             services.AddMvc();
@@ -71,21 +67,13 @@ namespace BeautyCenterCore
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-            //app.UseCookieAuthentication(new CookieAuthenticationOptions()
-            //{
-            //    AuthenticationScheme = "Policy",
-            //    LoginPath = new PathString("/Home/Login/"),
-            //    AccessDeniedPath = new PathString("/Home/Index/"),
-            //    AutomaticAuthenticate = false, // this will be handled by the authorisation policy
-            //    AutomaticChallenge = false // this will be handled by the authorisation policy
-            //});
             app.UseCookieAuthentication(new CookieAuthenticationOptions()
             {
                 AuthenticationScheme = "CookiePolicy",
                 LoginPath = new PathString("/Home/Login/"),
-                AccessDeniedPath = new PathString("/Home/Index/"),
-                AutomaticAuthenticate = false, // this will be handled by the authorisation policy
-                AutomaticChallenge = false // this will be handled by the authorisation policy
+                AccessDeniedPath = new PathString("/Home/AccessDenied"),
+                AutomaticAuthenticate = false, 
+                AutomaticChallenge = false 
             });
             
             app.UseStaticFiles();
