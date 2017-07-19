@@ -13,7 +13,11 @@ namespace BeautyCenterCore.Models
 
         [Required(ErrorMessage = "Ingrese Su Nombre Completo")]
         public string Nombres { get; set; }
+
+        [Required(ErrorMessage = "Necesitamos La Provincia")]
         public string Provincia { get; set; }
+
+        [Required(ErrorMessage = "Necesitamos La Ciudad")]
         public string Ciudad { get; set; }
 
         [Required(ErrorMessage = "Necesitamos la Direccion")]
