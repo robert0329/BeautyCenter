@@ -69,9 +69,9 @@ Costo float
 
 create table Facturas (
 FacturaId int identity(1,1)not null primary key,
-ClienteId int foreign key references Clientes,
+ClienteId int not null foreign key references Clientes,
 Fecha datetime ,
-Total decimal(18),
+Total float,
 );
 
 create table Servicios(

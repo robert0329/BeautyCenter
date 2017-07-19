@@ -36,7 +36,6 @@
                     <tr>
                         <th>#</th>
                         <th>Servicios</th>
-                        <th>Costo</th>
                     </tr>
                 </thead>
                 <tbody id="tbBody"></tbody>
@@ -114,7 +113,7 @@
                         contentType: "application/json",
                         success: function (data) {
                             if (!data) {
-                                alert("No puedo guardar el detalle");
+                                alert("No se guardo el detalle");
                             }
                             else {
                                 alert("Se Guardo");
@@ -147,7 +146,7 @@
                 nose = atributoCId;
                 var atributoS = atributosS.text();
                 var can = $('#tbCantPersonas').val();
-                var fec = $('#dtFecha').val();
+                var fec = $('#dpFecha').val();
                 var factura = {
                     CitaId: 0,
                     ClienteId:atributoCId,
@@ -159,12 +158,7 @@
                 alert(factura);
                 EnviarCita(factura);
             }
-            function Clear() {
-                $("#tbServicio").val("");
-                $("#tbCosto").val("");
-                $("#tbDescuento").val("");
-                $("#tbSub-Total").val("");
-            }
+
             function Seleccionar() {
                 var precio = $('#ComboBox').find('option:selected').attr('value');
 
@@ -172,9 +166,8 @@
             }
             function Limpiar() {
                 $('#ComboBoxC').val("");
-                $('#tbCosto').val("");
-                $('#tbServicio').val("");
-                Clear();
+                $('#tbCantPersonas').val("");
+                $('#dpFecha').val("");
                 $('#tbBody tr').remove();
             }
             function Cargar() {

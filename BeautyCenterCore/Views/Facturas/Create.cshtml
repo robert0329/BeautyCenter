@@ -22,7 +22,7 @@
         <div class="form-group col-lg-12">
             <div class="input-group">
                 <label>Cliente</label>
-                <select class="form-control selected"  id="ComboBoxCliente"placeholder="Cliente"onchange=""></select>
+                <select class="form-control selected"  id="ComboBoxCliente"placeholder="Cliente"></select>
             </div>
         </div>
         <div class="form-group" size="100">
@@ -126,6 +126,7 @@
                 $('#tbTotal').val(monto);
 
                 Clear();
+                $('#tbDescuento').val = 0;
             }
             function SentDetails(detail) {
                 var pack = JSON.stringify(detail);
@@ -191,7 +192,7 @@
             function Clear() {
                 $("#tbServicio").val("");
                 $("#tbCosto").val("");
-                $("#tbDescuento").val("");
+                $("#tbDescuento").val(0);
                 $("#tbSub-Total").val("");
             }    
 
