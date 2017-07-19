@@ -62,7 +62,7 @@ namespace BeautyCenterCore
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Citas}/{action=Index}/{id?}");
+                    template: "{controller=Facturas}/{action=Index}/{id?}");
             });
         }
     }
