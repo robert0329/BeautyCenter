@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using BeautyCenterCore.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace BeautyCenterCore
 {
@@ -31,7 +32,14 @@ namespace BeautyCenterCore
         {
             services.AddDbContext<BeautyCoreDb>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("BeautyCoreDb")));
-
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("CookiePolicy", policy =>
+                {
+                    policy.AddAuthenticationSchemes("CookiePolicy", "CookiePolicy"); // order does matter. The last scheme specified here WILL become the default Identity when accessed from User.Identity
+                    policy.RequireAuthenticatedUser();
+                });
+            });
             services.AddDistributedMemoryCache();
             services.AddSession();
             services.AddMvc();
@@ -52,14 +60,21 @@ namespace BeautyCenterCore
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-
+            app.UseCookieAuthentication(new CookieAuthenticationOptions()
+            {
+                AuthenticationScheme = "CookiePolicy",
+                LoginPath = new PathString("/Home/Login/"),
+                AccessDeniedPath = new PathString("/Account/AccessDenied/"),
+                AutomaticAuthenticate = false, // this will be handled by the authorisation policy
+                AutomaticChallenge = false // this will be handled by the authorisation policy
+            });
             app.UseStaticFiles();
             app.UseSession();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Facturas}/{action=Index}/{id?}");
+                    template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

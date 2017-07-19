@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace BeautyCenterCore.Controllers
 {
+    [Authorize(ActiveAuthenticationSchemes = "CookiePolicy")]
+    //[Authorize]
     public class CitasController : Controller
     {
         private readonly BeautyCoreDb _context;

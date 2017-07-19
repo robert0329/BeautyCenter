@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using BeautyCenterCore.Models;
 using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace BeautyCenterCore.Controllers
 {
@@ -74,6 +75,15 @@ namespace BeautyCenterCore.Controllers
             {
                 HttpContext.Session.SetString("UserID", account.UserID.ToString());
                 HttpContext.Session.SetString("Username", account.Username);
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, account.Username)
+                };
+
+                var userIdentity = new ClaimsIdentity(claims, "login");
+
+                ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
+                HttpContext.Authentication.SignInAsync("CookiePolicy", principal);
                 return RedirectToAction("Index");
             }
             else
@@ -98,6 +108,7 @@ namespace BeautyCenterCore.Controllers
 
         public ActionResult Logout()
         {
+            HttpContext.Authentication.SignOutAsync("CookiePolicy");
             HttpContext.Session.Clear();
             return RedirectToAction("Index");
         }
