@@ -8,9 +8,10 @@ using BeautyCenterCore.Models;
 namespace BeautyCenterCore.Migrations
 {
     [DbContext(typeof(BeautyCoreDb))]
-    partial class BeautyCoreDbModelSnapshot : ModelSnapshot
+    [Migration("20170719135153_holaa")]
+    partial class holaa
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")

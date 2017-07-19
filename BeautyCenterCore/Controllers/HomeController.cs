@@ -47,7 +47,6 @@ namespace BeautyCenterCore.Controllers
         {
             return View();
         }
-        [Authorize(ActiveAuthenticationSchemes = "Policy")]
         [HttpPost]
         public ActionResult Register(UserAccount user)
         {
@@ -84,11 +83,12 @@ namespace BeautyCenterCore.Controllers
 
                 ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
 
-                if(account.Username =="Admin")
-                {
-                    HttpContext.Authentication.SignInAsync("Policy", principal);
-                }
-                else
+                //if(account.Username =="Admin" || account.Username == "admin")
+                //{
+                //    HttpContext.Authentication.SignOutAsync("CookiePolicy");
+                //    HttpContext.Authentication.SignInAsync("Policy", principal);
+                //}
+                //else
                 {
                     HttpContext.Authentication.SignInAsync("CookiePolicy", principal);
                 }

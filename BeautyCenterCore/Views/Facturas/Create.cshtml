@@ -150,6 +150,7 @@
             }
 
             function EnviarFactura(personas) {
+                console.log(personas);
                 $.ajax(
                     {
                         method: "POST",
@@ -166,14 +167,17 @@
                     });
             };
             function CrearFactura() {
-                var atributos = $('#ComboBoxC').find('option:selected');
+                var atributos = $('#ComboBoxCliente').find('option:selected');
+                var p = $('#ComboBoxCliente').find('option:selected').attr('id');
                 var atributo = atributos.text();
                 var total = $('#tbTotal').val();
                 var factura = {
                     FacturaId: 0,
-                    ClienteId: atributo,
+                    Nombres: atributo,
+                    ClienteId: p,
                     Total: total
                 }
+                console.log(factura);
                 EnviarFactura(factura);
             }
                     

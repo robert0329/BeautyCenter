@@ -56,7 +56,8 @@ namespace BeautyCenterCore.Controllers
         // GET: Citas
         public IActionResult Index()
         {
-            return View(BLL.CitasBLL.GetLista());
+            List<Citas> p = BLL.CitasBLL.GetLista();
+            return View(p);
         }
 
         // GET: Citas/Details/5

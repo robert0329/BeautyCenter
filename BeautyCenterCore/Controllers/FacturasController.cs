@@ -44,7 +44,8 @@ namespace BeautyCenterCore.Controllers
         // GET: Facturas
         public IActionResult Index()
         {
-            return View(BLL.FacturasBLL.GetLista());
+            List<Facturas> f = BLL.FacturasBLL.GetLista();
+            return View(f);
         }
 
         // GET: Facturas/Details/5

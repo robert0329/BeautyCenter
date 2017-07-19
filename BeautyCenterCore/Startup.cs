@@ -35,12 +35,17 @@ namespace BeautyCenterCore
 
             services.AddAuthorization(options =>
             {
+                //options.AddPolicy("Policy", policy =>
+                //{
+                //    policy.AddAuthenticationSchemes("Policy", "Policy");
+                //    policy.RequireAuthenticatedUser();
+                //});
                 options.AddPolicy("CookiePolicy", policy =>
                 {
-                    policy.AddAuthenticationSchemes("CookiePolicy", "CookiePolicy"); // order does matter. The last scheme specified here WILL become the default Identity when accessed from User.Identity
-                    policy.AddAuthenticationSchemes("Policy", "Policy");
+                    policy.AddAuthenticationSchemes("CookiePolicy", "CookiePolicy");
                     policy.RequireAuthenticatedUser();
                 });
+                
             });
             services.AddDistributedMemoryCache();
             services.AddSession();
@@ -66,6 +71,14 @@ namespace BeautyCenterCore
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+            //app.UseCookieAuthentication(new CookieAuthenticationOptions()
+            //{
+            //    AuthenticationScheme = "Policy",
+            //    LoginPath = new PathString("/Home/Login/"),
+            //    AccessDeniedPath = new PathString("/Home/Index/"),
+            //    AutomaticAuthenticate = false, // this will be handled by the authorisation policy
+            //    AutomaticChallenge = false // this will be handled by the authorisation policy
+            //});
             app.UseCookieAuthentication(new CookieAuthenticationOptions()
             {
                 AuthenticationScheme = "CookiePolicy",
@@ -74,14 +87,7 @@ namespace BeautyCenterCore
                 AutomaticAuthenticate = false, // this will be handled by the authorisation policy
                 AutomaticChallenge = false // this will be handled by the authorisation policy
             });
-            app.UseCookieAuthentication(new CookieAuthenticationOptions()
-            {
-                AuthenticationScheme = "Policy",
-                LoginPath = new PathString("/Home/Login/"),
-                AccessDeniedPath = new PathString("/Home/Index/"),
-                AutomaticAuthenticate = false, // this will be handled by the authorisation policy
-                AutomaticChallenge = false // this will be handled by the authorisation policy
-            });
+            
             app.UseStaticFiles();
             app.UseSession();
             app.UseMvc(routes =>
